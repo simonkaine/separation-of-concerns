@@ -43,12 +43,26 @@ describe('03_separation-of-concerns-demo routes', () => {
   });
 
   it('should GET an order by id', async () => {
-    await request(app).post('/api/v1/orders').send({ id: 1 });
+    await request(app).post('/api/v1/orders').send({ id: 1, quantity: 10 });
     return request(app)
       .get('/api/v1/orders/1')
       .then(res => {
         expect(res.body).toEqual({
-          id: '1'
+          id: '1',
+          quantity: 10
+        });
+      });
+  });
+
+  it('should PATCH an order by id', async () => {
+    await request(app).post('/api/v1/orders').send({ id: 1, quantity: 10 });
+    await request(app).patch('/api/v1/orders/1').send({ quantity: 66 });
+    return request(app)
+      .get('/api/v1/orders/1')
+      .then(res => {
+        expect(res.body).toEqual({
+          id: '1',
+          quantity: 66
         });
       });
   });
